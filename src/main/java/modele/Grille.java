@@ -17,7 +17,7 @@ public class Grille {
 	 * @return : La case de coordonnées x et y.
 	 */
 	public Case getCase(int x, int y) {
-		return this.cases.get((x * cases.get(cases.size() - 1).getY()) + x + y);
+		return this.cases.get((x * cases.get(cases.size() - 1).y()) + x + y);
 	}
 
 	public Grille(int lignes, int colonnes) {

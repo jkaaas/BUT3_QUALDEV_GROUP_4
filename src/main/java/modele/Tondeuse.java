@@ -103,11 +103,11 @@ public class Tondeuse {
 	}
 
 	private void deplacerEnAvant() throws DeplacementException {
-		int x = caseFinale.getX();
-		int y = caseFinale.getY();
+		int x = caseFinale.x();
+		int y = caseFinale.y();
 		switch (sens) {
 		case NORTH:
-			y = y + 2;
+			y = y - 1;
 			break;
 		case EAST:
 			x = x + 1;
@@ -116,7 +116,7 @@ public class Tondeuse {
 			x = x - 1;
 			break;
 		case SOUTH:
-			y = y - 2;
+			y = y + 1;
 			break;
 		default:
 			break;
@@ -130,7 +130,7 @@ public class Tondeuse {
 
 	@Override
 	public String toString() {
-		return "Ma position finale est X = " + this.getCaseFinale().getX() + ", Y = " + this.getCaseFinale().getY()
+		return "Ma position finale est X = " + this.getCaseFinale().x() + ", Y = " + this.getCaseFinale().x()
 				+ " et je suis orientée : " + this.sens;
 	}
 }
