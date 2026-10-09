@@ -1,21 +1,15 @@
 package modele;
 
-import static enumerations.EDirection.EAST;
-import static enumerations.EDirection.NORTH;
-import static enumerations.EDirection.SOUTH;
-import static enumerations.EDirection.WEST;
-
-import enumerations.EDeplacement;
 import enumerations.EDirection;
-import exceptions.DeplacementException;
+import interfaces.IRobot;
 
 /***
- * Attention n'est pas SOLID (SRP).
- * A créer une classe manager.
+ * Une tondeuse connaît sa position et son sens.
+ * Les déplacements sont gérés par TondeuseManager.
  * @author stephane.joyeux
  *
  */
-public class Tondeuse {
+public class Tondeuse implements IRobot {
 
 	// Une tondeuse se déplace sur une pelouse.
 	private Grille pelouse;
@@ -29,18 +23,6 @@ public class Tondeuse {
 	// Sens de la tondeuse :
 	private EDirection sens;
 
-	public Case getCaseFinale() {
-		return caseFinale;
-	}
-
-	public Case getCaseDepart() {
-		return caseDepart;
-	}
-
-	public EDirection getSens() {
-		return sens;
-	}
-
 	public Tondeuse(int lignes, int colonnes, int posX, int posY, EDirection sens) {
 		this.pelouse = new Grille(lignes, colonnes);
 		this.caseDepart = this.pelouse.getCase(posX, posY);
@@ -48,89 +30,38 @@ public class Tondeuse {
 		this.sens = sens;
 	}
 
-	public void deplacement(EDeplacement deplacement) throws DeplacementException {
-		switch (deplacement) {
-		case A:
-			deplacerEnAvant();
-			break;
-		case D:
-			deplacerADroite();
-			break;
-		case G:
-			deplacerAGauche();
-			break;
-		default:
-			break;
-		}
+	public Case getCaseDepart() {
+		return caseDepart;
 	}
 
-	private void deplacerADroite() {
-		switch (sens) {
-		case NORTH:
-			sens = EAST;
-			break;
-		case EAST:
-			sens = SOUTH;
-			break;
-		case WEST:
-			sens = NORTH;
-			break;
-		case SOUTH:
-			sens = WEST;
-			break;
-		default:
-			break;
-		}
+	@Override
+	public Case getCaseFinale() {
+		return caseFinale;
 	}
 
-	private void deplacerAGauche() {
-		switch (sens) {
-		case NORTH:
-			sens = WEST;
-			break;
-		case EAST:
-			sens = NORTH;
-			break;
-		case WEST:
-			sens = SOUTH;
-			break;
-		case SOUTH:
-			sens = EAST;
-			break;
-		default:
-			break;
-		}
+	@Override
+	public void setCaseFinale(Case caseFinale) {
+		this.caseFinale = caseFinale;
 	}
 
-	private void deplacerEnAvant() throws DeplacementException {
-		int x = caseFinale.x();
-		int y = caseFinale.y();
-		switch (sens) {
-		case NORTH:
-			y = y - 1;
-			break;
-		case EAST:
-			x = x + 1;
-			break;
-		case WEST:
-			x = x - 1;
-			break;
-		case SOUTH:
-			y = y + 1;
-			break;
-		default:
-			break;
-		}
-		try {
-			this.caseFinale = this.pelouse.getCase(x, y);
-		} catch (Exception e) {
-			throw new DeplacementException("Déplacement Impossible !");
-		}
+	@Override
+	public EDirection getSens() {
+		return sens;
+	}
+
+	@Override
+	public void setSens(EDirection sens) {
+		this.sens = sens;
+	}
+
+	@Override
+	public Grille getGrille() {
+		return pelouse;
 	}
 
 	@Override
 	public String toString() {
-		return "Ma position finale est X = " + this.getCaseFinale().x() + ", Y = " + this.getCaseFinale().x()
+		return "Ma position finale est X = " + this.getCaseFinale().x() + ", Y = " + this.getCaseFinale().y()
 				+ " et je suis orientée : " + this.sens;
 	}
 }
